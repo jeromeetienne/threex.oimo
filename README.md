@@ -9,6 +9,9 @@ Show Don't Tell
 * [examples/basic.html](http://jeromeetienne.github.io/threex.oimo/examples/basic.html)
 \[[view source](https://github.com/jeromeetienne/threex.oimo/blob/master/examples/basic.html)\] :
 It shows a bunch of cube and sphere falling on a ground.
+* [examples/demo.html](http://jeromeetienne.github.io/threex.oimo/examples/demo.html)
+\[[view source](https://github.com/jeromeetienne/threex.oimo/blob/master/examples/demo.html)\] :
+It shows a more elaborate rendering. Planets falling down a pyramid in space.
 
 How To Install It
 =================
