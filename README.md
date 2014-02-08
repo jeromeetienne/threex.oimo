@@ -1,13 +1,13 @@
-threex.iomo
+threex.oimo
 ===========
 
-threex.iomo is a [threex](http://jeromeetienne.github.io/threex/) extension for three.js which provides a realistic physics easy to include in your own games.
-It contains helpers for [oimo.js](https://github.com/lo-th/Oimo.js) physics library.
+threex.oimo is a [threex](http://jeromeetienne.github.io/threex/) extension for three.js which provides a realistic physics easy to include in your own games.
+It is a bunch of helpers for [oimo.js](https://github.com/lo-th/Oimo.js) physics library.
 
 Show Don't Tell
 ===============
-* [examples/basic.html](http://jeromeetienne.github.io/threex.iomo/examples/basic.html)
-\[[view source](https://github.com/jeromeetienne/threex.iomo/blob/master/examples/basic.html)\] :
+* [examples/basic.html](http://jeromeetienne.github.io/threex.oimo/examples/basic.html)
+\[[view source](https://github.com/jeromeetienne/threex.oimo/blob/master/examples/basic.html)\] :
 It shows a bunch of cube and sphere falling on a ground.
 
 How To Install It
@@ -16,19 +16,19 @@ How To Install It
 You can install it via script tag
 
 ```
- <script src='threex.iomo.js'></script>
+ <script src='threex.oimo.js'></script>
 ```
 
 Or you can install with [bower](http://bower.io/), as you wish.
 
 ```
-bower install threex.iomo
+bower install threex.oimo
 ```
 
 How To Use It
 =============
 
-Well first you need to create a iomo.js world. You do that like this
+Well first you need to create a oimo.js world. You do that like this
 
 ```
 var world	= new OIMO.World()
@@ -64,7 +64,7 @@ var body	= THREEx.Iomo.createBodyFromMesh(world, mesh)
 
 It will update the position/rotation of a ```THREE.Mesh``` 
 based on a position/rotation of a ```IOMO.Body```. You need
-this to see your meshes moves according to iomo.js physics.
+this to see your meshes moves according to oimo.js physics.
 First you create the object
 
 ```
@@ -80,21 +80,21 @@ updater.update()
 
 ## .Stats()
 
-It will display statistic from iomo.js, it may be useful to know what is going on.
+It will display statistic from oimo.js, it may be useful to know what is going on.
 It acts very much like 
 [mrdoob's stats]()
 or 
 [threex.rendererstats]().
 
 ```
-var iomoStats	= new THREEx.Iomo.Stats(world)
-document.body.appendChild(iomoStats.domElement)
+var oimoStats	= new THREEx.Iomo.Stats(world)
+document.body.appendChild(oimoStats.domElement)
 ```
 
 Then, at every frame, update it.
 
 ```
-iomoStats.update()
+oimoStats.update()
 ```
 
 
