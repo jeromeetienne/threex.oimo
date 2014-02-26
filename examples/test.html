@@ -33,12 +33,40 @@
 	
 	var ground	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
 
+
+
+;(function(){
+	var geometry	= new THREE.CubeGeometry(20,20,20)
+	var material	= new THREE.MeshNormalMaterial()
+	var mesh	= new THREE.Mesh( geometry, material )
+	scene.add( mesh )
+	
+	
+	// create IOMO.Body from mesh
+	var body	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+window.body	= body
+	// add an updater for them
+	var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
+	onRenderFcts.push(function(delta){
+		updater.update()
+	})
+
+	var z	= -30;	
+	onRenderFcts.push(function(delta){
+		z	+= delta * 15
+		if( z > 30 )	z = -30
+		body.setPosition(0, geometry.height/2, z);
+		body.setRotation(0,0,0);
+	})
+})()
+
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object and make it move					//
 	//////////////////////////////////////////////////////////////////////////////////	
 for(var i = 0; i < 100; i++ ){
 	(function(){
-		if( Math.random() < 0.5 ){
+		if( Math.random() < 0.5 && false ){
 			var width	= 3 + (Math.random()-0.5)*1
 			var height	= 3 + (Math.random()-0.5)*1
 			var depth	= 3 + (Math.random()-0.5)*1
@@ -54,6 +82,7 @@ for(var i = 0; i < 100; i++ ){
 
 		mesh.position.x	= (Math.random()-0.5)*20
 		mesh.position.y	= 25 + (Math.random()-0.5)*15
+		mesh.position.y	= 5
 		mesh.position.z	= (Math.random()-0.5)*20
 		//////////////////////////////////////////////////////////////////////////////////
 		//		comment								//
@@ -70,11 +99,12 @@ window.body	= body
 
 		// if the position.y < 20, reset the position
 		onRenderFcts.push(function(delta){
+		// return;
 			if( mesh.position.y < -20 ){
 				mesh.position.x	= (Math.random()-0.5)*20
 				mesh.position.y	= 25 + (Math.random()-0.5)*15
 				mesh.position.z	= (Math.random()-0.5)*20
-				body.setPosition(mesh.position.x, mesh.position.y, mesh.position.z);	
+				body.setPosition(mesh.position.x, mesh.position.y, mesh.position.z);
 			}
 		})
 	})()

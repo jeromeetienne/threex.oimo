@@ -20,15 +20,19 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 			type	:'box',
 			size	: size,
 			pos	: mesh.position.toArray(),
+			rot	: mesh.rotation.toArray().slice(0,3),
 			world	: world,
 			move	: move,
 		})
+
 		return body
 	}else if( mesh.geometry instanceof THREE.SphereGeometry ){
+// TODO no rotation ??
 		var body	= new OIMO.Body({
 			type	:'sphere',
 			size	: [mesh.geometry.radius * mesh.scale.x],
 			pos	: mesh.position.toArray(),
+			rot	: mesh.rotation.toArray().slice(0,3),
 			world	: world,
 			move	: move,
 		})
