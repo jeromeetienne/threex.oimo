@@ -36,14 +36,15 @@
 
 
 ;(function(){
-	var geometry	= new THREE.CubeGeometry(20,20,20)
+	var geometry	= new THREE.CubeGeometry(20,5,20)
 	var material	= new THREE.MeshNormalMaterial()
 	var mesh	= new THREE.Mesh( geometry, material )
 	scene.add( mesh )
 	
+	mesh.position.y	= geometry.height/2
 	
 	// create IOMO.Body from mesh
-	var body	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+	var body	= THREEx.Oimo.createBodyFromMesh(world, mesh, true)
 window.body	= body
 	// add an updater for them
 	var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
@@ -51,12 +52,24 @@ window.body	= body
 		updater.update()
 	})
 
-	var z	= -30;	
+// 	var z	= -30;	
 	onRenderFcts.push(function(delta){
-		z	+= delta * 15
-		if( z > 30 )	z = -30
-		body.setPosition(0, geometry.height/2, z);
-		body.setRotation(0,0,0);
+		body.body.linearVelocity.x	= 0
+		body.body.linearVelocity.y	= 0
+		body.body.linearVelocity.z	= 1
+// return
+		// z	+= delta * 15
+		if( body.body.position.z > 30 )
+			// body.setPosoposition.z = -30
+			body.setPosition(0, geometry.height/2, -30);
+		// body.setRotation(0,0,0);
+		// body.body.linearVelocity.x	= 0
+		// body.body.linearVelocity.y	= 0
+		// body.body.linearVelocity.z	= 0
+		
+		// body.body.angularVelocity.x	= 0
+		// body.body.angularVelocity.y	= 0
+		// body.body.angularVelocity.z	= 0
 	})
 })()
 

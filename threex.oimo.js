@@ -11,14 +11,13 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 	move	= move !== undefined ? move : true
 	console.assert( mesh instanceof THREE.Mesh )
 	if( mesh.geometry instanceof THREE.CubeGeometry ){
-		var size	= [
-			mesh.geometry.width  * mesh.scale.x,
-			mesh.geometry.height * mesh.scale.y,
-			mesh.geometry.depth  * mesh.scale.z,
-		]
 		var body	= new OIMO.Body({
 			type	:'box',
-			size	: size,
+			size	: [
+				mesh.geometry.width  * mesh.scale.x,
+				mesh.geometry.height * mesh.scale.y,
+				mesh.geometry.depth  * mesh.scale.z,
+			],
 			pos	: mesh.position.toArray(),
 			rot	: mesh.rotation.toArray().slice(0,3),
 			world	: world,
@@ -27,7 +26,6 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 
 		return body
 	}else if( mesh.geometry instanceof THREE.SphereGeometry ){
-// TODO no rotation ??
 		var body	= new OIMO.Body({
 			type	:'sphere',
 			size	: [mesh.geometry.radius * mesh.scale.x],
