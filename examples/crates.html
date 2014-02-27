@@ -8,6 +8,8 @@ require([ '../package.require.js'
 	, 'bower_components/threex.planets/package.require.js'
 	, 'bower_components/threex.crates/package.require.js'
 	, 'bower_components/threex.grassground/package.require.js'
+	, 'bower_components/threex.sportballs/package.require.js'
+	, 'bower_components/threex.daynight/package.require.js'
 	] , function(){
 	var renderer	= new THREE.WebGLRenderer({
 		antialiasing	: true
@@ -50,9 +52,9 @@ require([ '../package.require.js'
 		light.shadowMapWidth	= 2048
 		light.shadowMapHeight	= 2048
 
-		// add a light behind
-		var light	= new THREE.DirectionalLight('white', 0.75)
-		light.position.set(-0.5, -0.5, -2)
+		// // add a light behind
+		// var light	= new THREE.DirectionalLight('white', 0.75)
+		// light.position.set(-0.5, -0.5, -2)
 	})()
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +115,7 @@ for(var z =-3; z <= 3; z++ ){
 
 		mesh.position.x	= (x)*crate.scale.x
 		mesh.position.y	= (y+crate.geometry.height/2)*crate.scale.y
-		mesh.position.z	= (z*crate.scale.z)*3 - 10
+		mesh.position.z	= (z*crate.scale.z)*3 - 10 
 
 		//////////////////////////////////////////////////////////////////////////////////
 		//		comment								//
@@ -140,7 +142,10 @@ for(var z =-3; z <= 3; z++ ){
 
 ;(function(){
 	// create mesh
-	var mesh	= THREEx.Planets.createEarth()
+	// var mesh	= THREEx.Planets.createEarth()
+	var mesh	= THREEx.SportBalls.createFootball()
+	mesh.receiveShadow	= true
+	mesh.castShadow		= true
 	mesh.scale.multiplyScalar(8)
 	mesh.position.z	= 40
 	mesh.position.y	= mesh.geometry.radius*mesh.scale.y
@@ -190,6 +195,58 @@ for(var z =-3; z <= 3; z++ ){
 		camera.lookAt( new THREE.Vector3(0,5,0) )
 	})
 
+	//////////////////////////////////////////////////////////////////////////////////
+	//		comment								//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var sunAngle = 0/6*Math.PI*2;
+	// var sunAngle = -3/6*Math.PI*2;
+	onRenderFcts.push(function(delta, now){
+		var dayDuration	= 40	// nb seconds for a full day cycle
+		sunAngle	+= delta/dayDuration * Math.PI*2
+	})
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		starfield							//
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	var starField	= new THREEx.DayNight.StarField()
+	scene.add(starField.object3d)
+	onRenderFcts.push(function(delta, now){
+		starField.update(sunAngle)
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		sunSphere							//
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	var sunSphere	= new THREEx.DayNight.SunSphere()
+	scene.add( sunSphere.object3d )
+	onRenderFcts.push(function(delta, now){
+		sunSphere.update(sunAngle)
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		directionalLight						//
+	//////////////////////////////////////////////////////////////////////////////////
+        
+
+	var sunLight	= new THREEx.DayNight.SunLight()
+	scene.add( sunLight.object3d )
+	onRenderFcts.push(function(delta, now){
+		sunLight.update(sunAngle)
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		skydom								//
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	var skydom	= new THREEx.DayNight.Skydom()
+	scene.add( skydom.object3d )
+	onRenderFcts.push(function(delta, now){
+		skydom.update(sunAngle)
+	})
+	
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the scene						//

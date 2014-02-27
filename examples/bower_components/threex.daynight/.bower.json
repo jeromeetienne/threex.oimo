@@ -1,0 +1,14 @@
+{
+  "name": "threex.daynight",
+  "homepage": "https://github.com/jeromeetienne/threex.daynight",
+  "_release": "aa9b37dc20",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "aa9b37dc2013f9db8cf3f515e72cbbfe582708ee"
+  },
+  "_source": "git://github.com/jeromeetienne/threex.daynight.git",
+  "_target": "*",
+  "_originalSource": "threex.daynight",
+  "_direct": true
+}
