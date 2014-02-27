@@ -6,6 +6,9 @@ It is a bunch of helpers for [oimo.js](https://github.com/lo-th/Oimo.js) physics
 
 Show Don't Tell
 ===============
+* [examples/crates.html](http://jeromeetienne.github.io/threex.oimo/examples/crates.html)
+\[[view source](https://github.com/jeromeetienne/threex.oimo/blob/master/examples/crates.html)\] :
+It shows a slow motion demo of a football hitting a wall of crates.
 * [examples/basic.html](http://jeromeetienne.github.io/threex.oimo/examples/basic.html)
 \[[view source](https://github.com/jeromeetienne/threex.oimo/blob/master/examples/basic.html)\] :
 It shows a bunch of cube and sphere falling on a ground.

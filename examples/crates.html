@@ -21,7 +21,7 @@ require([ '../package.require.js'
 	var onRenderFcts= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000)
-	camera.position.z = 50
+	camera.position.z = 30
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		set 3 point lighting						//
@@ -61,7 +61,7 @@ require([ '../package.require.js'
 	//		oimo world							//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var world	= new OIMO.World(60*10)
+	var world	= new OIMO.World(60*100)
 	onRenderFcts.push(function(delta){
 		world.step()
 	})
@@ -74,8 +74,6 @@ require([ '../package.require.js'
 	var starfield	= THREEx.Planets.createStarfield()
 	starfield.scale.multiplyScalar(10)
 	scene.add(starfield)
-	
-
 
 
 
@@ -144,9 +142,10 @@ for(var z =-3; z <= 3; z++ ){
 	// create mesh
 	// var mesh	= THREEx.Planets.createEarth()
 	var mesh	= THREEx.SportBalls.createFootball()
+window.ball	= mesh
 	mesh.receiveShadow	= true
 	mesh.castShadow		= true
-	mesh.scale.multiplyScalar(8)
+	mesh.scale.multiplyScalar(10)
 	mesh.position.z	= 40
 	mesh.position.y	= mesh.geometry.radius*mesh.scale.y
 	scene.add( mesh )
@@ -195,11 +194,18 @@ for(var z =-3; z <= 3; z++ ){
 		camera.lookAt( new THREE.Vector3(0,5,0) )
 	})
 
+	// onRenderFcts.push(function(delta, now){
+	// 	camera.position.copy(ball.position)
+	// 	camera.position.y += 3
+	// 	camera.position.z += 20
+	// 	camera.lookAt( camera.position.clone().add(new THREE.Vector3(0,0, -4)) )
+	// })
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		comment								//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var sunAngle = 0/6*Math.PI*2;
+	var sunAngle = -2/6*Math.PI*2;
 	// var sunAngle = -3/6*Math.PI*2;
 	onRenderFcts.push(function(delta, now){
 		var dayDuration	= 40	// nb seconds for a full day cycle
