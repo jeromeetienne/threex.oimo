@@ -1,0 +1,14 @@
+{
+  "name": "threex.crates",
+  "homepage": "https://github.com/jeromeetienne/threex.crates",
+  "_release": "90a5b815e0",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "90a5b815e0ed4737e3f0cabd145aa4b54fe7e2ac"
+  },
+  "_source": "git://github.com/jeromeetienne/threex.crates.git",
+  "_target": "*",
+  "_originalSource": "threex.crates",
+  "_direct": true
+}

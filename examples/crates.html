@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<script src='vendor/require.js/require.js'></script>
+<script src='vendor/three.js/build/three.min.js'></script>
+<script src='../vendor/oimo.js'></script>
+<script src='../threex.oimo.js'></script>
+<body style='margin: 0px; background-color: #000000; overflow: hidden;'><script>
+require([ '../package.require.js'
+	, 'bower_components/threex.planets/package.require.js'
+	, 'bower_components/threex.crates/package.require.js'
+	, 'bower_components/threex.grassground/package.require.js'
+	] , function(){
+	var renderer	= new THREE.WebGLRenderer({
+		antialiasing	: true
+	});
+	renderer.shadowMapEnabled	= true
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+
+	var onRenderFcts= [];
+	var scene	= new THREE.Scene();
+	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000)
+	camera.position.z = 50
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		set 3 point lighting						//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	;(function(){
+		// add a ambient light
+		var light	= new THREE.AmbientLight( 0x020202 )
+		scene.add( light )
+		// add a light front right
+		var light	= new THREE.DirectionalLight('white', 1)
+		light.position.set(0.5, 0.5, 2).multiplyScalar(10)
+		scene.add( light )
+		light.castShadow	= true
+		light.shadowCameraNear	= 0.01
+		light.shadowCameraFar	= 250
+		light.shadowCameraFov	= 45
+
+		light.shadowCameraLeft	= -20
+		light.shadowCameraRight	=  20
+		light.shadowCameraTop	=  30
+		light.shadowCameraBottom= -30
+		// light.shadowCameraVisible	= true
+
+		light.shadowBias	= 0.001
+		light.shadowDarkness	= 0.6
+
+		light.shadowMapWidth	= 2048
+		light.shadowMapHeight	= 2048
+
+		// add a light behind
+		var light	= new THREE.DirectionalLight('white', 0.75)
+		light.position.set(-0.5, -0.5, -2)
+	})()
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		oimo world							//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var world	= new OIMO.World(60*10)
+	onRenderFcts.push(function(delta){
+		world.step()
+	})
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		comment								//
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	var starfield	= THREEx.Planets.createStarfield()
+	starfield.scale.multiplyScalar(10)
+	scene.add(starfield)
+	
+
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add the grass ground				//
+	//////////////////////////////////////////////////////////////////////////////////	
+
+	var geometry	= new THREE.CubeGeometry(300,2,200);	
+	var material	= new THREEx.GrassGround({
+		repeatX		: 30,
+		repeatY		: 30,
+	}).material
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.receiveShadow	= true
+	mesh.position.y	= -geometry.height/2
+
+	var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+	scene.add(mesh)
+
+//////////////////////////////////////////////////////////////////////////////////
+//		comment								//
+//////////////////////////////////////////////////////////////////////////////////
+
+;(function(){
+	
+var crate	= THREEx.Crates.createCrate2();
+crate.receiveShadow	= true
+crate.castShadow	= true
+crate.scale.multiplyScalar(2)
+
+for(var x =-4; x <= 4; x++ ){
+for(var y = 0; y <  8; y++ ){
+for(var z =-3; z <= 3; z++ ){
+	(function(){
+		var mesh	= crate.clone()
+		scene.add( mesh )
+
+		mesh.position.x	= (x)*crate.scale.x
+		mesh.position.y	= (y+crate.geometry.height/2)*crate.scale.y
+		mesh.position.z	= (z*crate.scale.z)*3 - 10
+
+		//////////////////////////////////////////////////////////////////////////////////
+		//		comment								//
+		//////////////////////////////////////////////////////////////////////////////////
+
+		// create IOMO.Body from mesh
+		var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
+
+		// add an updater for them
+		var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
+		onRenderFcts.push(function(delta){
+			updater.update()
+		})
+	})()
+}    
+}    
+}    
+})()
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//		comment								//
+//////////////////////////////////////////////////////////////////////////////////
+
+;(function(){
+	// create mesh
+	var mesh	= THREEx.Planets.createEarth()
+	mesh.scale.multiplyScalar(8)
+	mesh.position.z	= 40
+	mesh.position.y	= mesh.geometry.radius*mesh.scale.y
+	scene.add( mesh )
+
+	// create IOMO.Body from mesh
+	var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
+
+	// add an updater for them
+	var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
+	onRenderFcts.push(function(delta){
+		updater.update()
+	})
+
+
+	body.body.linearVelocity.x	= 0
+	body.body.linearVelocity.y	= 0
+	body.body.linearVelocity.z	= -10
+
+	body.body.angularVelocity.x	= -Math.PI*30
+	body.body.angularVelocity.y	= 0
+	body.body.angularVelocity.z	= 0
+})()
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		comment								//
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	
+	var iomoStats	= new THREEx.Oimo.Stats(world)
+	document.body.appendChild(iomoStats.domElement)
+	onRenderFcts.push(function(delta){
+		iomoStats.update()
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Camera Controls							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var mouse	= {x : 0, y : 0}
+	document.addEventListener('mousemove', function(event){
+		mouse.x	= (event.clientX / window.innerWidth ) - 0.5
+		mouse.y	= (event.clientY / window.innerHeight) - 0.5
+	}, false)
+	onRenderFcts.push(function(delta, now){
+		camera.position.x += (mouse.x*10 - camera.position.x-4) * (delta*3)
+		camera.position.y += (mouse.y*5 - (camera.position.y-5)) * (delta*3)
+		camera.lookAt( new THREE.Vector3(0,5,0) )
+	})
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the scene						//
+	//////////////////////////////////////////////////////////////////////////////////
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );		
+	})
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		loop runner							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+		
+})
+
+</script></body>
