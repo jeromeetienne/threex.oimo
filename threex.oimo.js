@@ -45,10 +45,8 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
 	var matrix = new THREE.Matrix4();
 	this.update	= function(){
-		var phyMatrix	= body.getMatrix();
+		var phyMatrix	= body.body.getMatrix();
 		matrix.fromArray(phyMatrix);
-		// mesh.position.setFromMatrixPosition( matrix );
-		// mesh.rotation.setFromRotationMatrix( matrix );				
 		mesh.position.getPositionFromMatrix( matrix );
 		mesh.rotation.setFromRotationMatrix( matrix );				
 	}
