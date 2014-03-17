@@ -48,10 +48,16 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 
 THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
 	var matrix = new THREE.Matrix4();
+	var setFromMatrixPosition	= 
 	this.update	= function(){
 		var phyMatrix	= body.getMatrix();
 		matrix.fromArray(phyMatrix);
-		mesh.position.setFromMatrixPosition( matrix );
+		if( mesh.position.setFromMatrixPosition ){
+			mesh.position.setFromMatrixPosition( matrix );		
+		}else{
+			// for old three.js version. like r59, please remove asap
+			mesh.position.getPositionFromMatrix( matrix );				
+		}
 		mesh.rotation.setFromRotationMatrix( matrix );
 	}
 }
