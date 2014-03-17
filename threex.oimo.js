@@ -7,6 +7,10 @@ THREEx.Oimo	= {}
 //////////////////////////////////////////////////////////////////////////////////
 
 THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
+	function radianToDegree(radian) {
+		return radian * (180 / Math.PI);
+	}
+
 	// TODO this move parameter is crap, remove it
 	move	= move !== undefined ? move : true
 	console.assert( mesh instanceof THREE.Mesh )
@@ -19,7 +23,7 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 				mesh.geometry.depth  * mesh.scale.z,
 			],
 			pos	: mesh.position.toArray(),
-			rot	: mesh.rotation.toArray().slice(0,3),
+			rot	: mesh.rotation.toArray().slice(0,3).map(radianToDegree),
 			world	: world,
 			move	: move,
 		})
@@ -30,7 +34,7 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 			type	:'sphere',
 			size	: [mesh.geometry.radius * mesh.scale.x],
 			pos	: mesh.position.toArray(),
-			rot	: mesh.rotation.toArray().slice(0,3),
+			rot	: mesh.rotation.toArray().slice(0,3).map(radianToDegree),
 			world	: world,
 			move	: move,
 		})
@@ -47,10 +51,8 @@ THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
 	this.update	= function(){
 		var phyMatrix	= body.getMatrix();
 		matrix.fromArray(phyMatrix);
-		// mesh.position.setFromMatrixPosition( matrix );
-		// mesh.rotation.setFromRotationMatrix( matrix );				
-		mesh.position.getPositionFromMatrix( matrix );
-		mesh.rotation.setFromRotationMatrix( matrix );				
+		mesh.position.setFromMatrixPosition( matrix );
+		mesh.rotation.setFromRotationMatrix( matrix );
 	}
 }
 
@@ -61,7 +63,7 @@ THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
 //////////////////////////////////////////////////////////////////////////////////
 
 THREEx.Oimo.Stats	= function(world){
-	
+
 	var domElement	= document.createElement('div')
 	this.domElement	= domElement
 	// domElement.style.color	= 'bl'
@@ -70,7 +72,7 @@ THREEx.Oimo.Stats	= function(world){
 	domElement.style.left		= '10px'
 	domElement.style.width		= '400px'
 	domElement.style.height		= '400px'
-	
+
 	var fps=0, time, time_prev=0, fpsint = 0;
 	this.update	= function(){
 	    time = Date.now();
@@ -92,5 +94,5 @@ THREEx.Oimo.Stats	= function(world){
 	        "Total: " + world.performance.totalTime + " ms "
 	     ].join("\n");
 	    domElement.innerHTML = info;
-	}	
+	}
 }
