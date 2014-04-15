@@ -16,6 +16,11 @@ It shows a bunch of cube and sphere falling on a ground.
 \[[view source](https://github.com/jeromeetienne/threex.oimo/blob/master/examples/demo.html)\] :
 It shows a more elaborate rendering. Planets falling down a pyramid in space.
 
+A Screenshot
+============
+[![screenshot](https://raw.githubusercontent.com/jeromeetienne/threex.oimo/master/examples/images/screenshot-threex-oimo-512x512.jpg)](http://jeromeetienne.github.io/threex.oimo/examples/demo.html)
+
+
 How To Install It
 =================
 
