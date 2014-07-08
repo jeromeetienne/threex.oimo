@@ -14,7 +14,7 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 	// TODO this move parameter is crap, remove it
 	move	= move !== undefined ? move : true
 	console.assert( mesh instanceof THREE.Mesh )
-	if( mesh.geometry instanceof THREE.CubeGeometry ){
+	if( mesh.geometry instanceof THREE.BoxGeometry ){
 		var body	= new OIMO.Body({
 			type	:'box',
 			size	: [
