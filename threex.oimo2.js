@@ -1,17 +1,30 @@
+/**
+ * @namespace 
+ */
 var THREEx	= THREEx	|| {}
 
+/**
+ * @namespace 
+ */
 THREEx.Oimo	= {}
 
 //////////////////////////////////////////////////////////////////////////////////
 //		comment								//
 //////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Helper to create a body from a mesh
+ * 
+ * @param {OIMO.World} world - the physics world
+ * @param {THREE.Mesh} mesh  - the mesh 
+ * @param {Boolean=} move  - true if the object gonna move, false othersize. default to true
+ */
 THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
-
-
-	// TODO this move parameter is crap, remove it
+	// handle default parameters
+	// - TODO this move parameter is crap, remove it
 	move	= move !== undefined ? move : true
-	console.assert( mesh instanceof THREE.Mesh )
+
+	// build body options based on mesh
 	if( mesh.geometry instanceof THREE.BoxGeometry ){
 		var options	= {
 			type	:'box',
@@ -35,13 +48,14 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 			move	: move,
 		}
 	}else	console.assert(false, 'Unknown geometry')
-	
+
+	// actually build the OIMO.Body
 	var body	= new OIMO.Body(options)
-	// console.log('options', options, mesh)
-	// console.log('position', body.getPosition(), mesh.position)
-	// debugger
 	return body
 
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comments
+	//////////////////////////////////////////////////////////////////////////////////
 	function radianToDegree(radian) {
 		return radian * (180 / Math.PI);
 	}
@@ -51,12 +65,22 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 //		comment								//
 //////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * update a mesh with a body
+ * 
+ * @param {OIMO.Body} body - the body from which we update
+ * @param {THREE.Mesh} mesh - the mesh to update
+ */
 THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
+	/**
+	 * update the mesh
+	 */
 	this.update	= function(){
-		// console.log('position', body.getPosition())
+		// copy the position
                 mesh.position.copy(body.getPosition());
-                // mesh.quaternion.copy(body.getQuaternion());
-                // console.log('quaternion', body.getQuaternion());
+		// copy the rotation
+                // - this works on three r70 only
+                //   ``` mesh.quaternion.copy(body.getQuaternion());
 		var bodyQuaternion	= body.getQuaternion()
 		mesh.quaternion.set(
 			bodyQuaternion.x,
@@ -79,16 +103,16 @@ THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
  * @param {OIMO.World} world - the oimo world
  */
 THREEx.Oimo.Stats	= function(world){
-
+	// build the DOMElement
 	var domElement	= document.createElement('div')
 	this.domElement	= domElement
-	// domElement.style.color	= 'bl'
 	domElement.style.position	= 'absolute'
 	domElement.style.top		= '10px'
 	domElement.style.left		= '10px'
 	domElement.style.width		= '400px'
 	domElement.style.height		= '400px'
 
+	// update periodically the stats DOMElement
 	var fps=0, time, time_prev=0, fpsint = 0;
 	this.update	= function(){
 		time = Date.now();
