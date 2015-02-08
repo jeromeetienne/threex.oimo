@@ -55,7 +55,7 @@ require([ // '../package.require.js'
 		var light	= new THREE.DirectionalLight('white', 0.7)
 		light.position.set(-50,60,100)
 		scene.add( light )
-		// light.castShadow	= true
+		light.castShadow	= true
 		light.shadowCameraNear	= 0.01
 		light.shadowCameraFar	= 250
 		light.shadowCameraFov	= 45
@@ -64,7 +64,7 @@ require([ // '../package.require.js'
 		light.shadowCameraRight	=  100
 		light.shadowCameraTop	=  100
 		light.shadowCameraBottom= -100
-		light.shadowCameraVisible	= true 
+		// light.shadowCameraVisible	= true 
 
 		light.shadowBias	= 0.002
 		light.shadowDarkness	= 0.3
@@ -79,7 +79,7 @@ require([ // '../package.require.js'
 	//		oimo world							//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var world	= new OIMO.World(1/120, 2, 8)
+	var world	= new OIMO.World(1/360, 2, 8)
 	onRenderFcts.push(function(delta){
 		world.step()
 	})

@@ -62,7 +62,7 @@ require([ //'../package.require.js'
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// var world	= new OIMO.World()
-	var world	= new OIMO.World(1/(60*6), 2, 8)
+	var world	= new OIMO.World(1/360)
 	onRenderFcts.push(function(delta){
 		world.step()
 	})
@@ -159,7 +159,7 @@ window.ball	= mesh
 	// 
 	body.body.linearVelocity.x	= 0
 	body.body.linearVelocity.y	= 0
-	body.body.linearVelocity.z	= -10
+	body.body.linearVelocity.z	= -5
 	
 	body.body.angularVelocity.x	= -Math.PI*6*4
 	// body.body.angularVelocity.y	= 0
