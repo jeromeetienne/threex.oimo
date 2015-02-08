@@ -59,12 +59,10 @@ require([ '../package.require.js'
 	//		oimo world							//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// var world	= new OIMO.World()
-	var world	= new OIMO.World(1/360)
-	onRenderFcts.push(function(delta){
+	var world	= new OIMO.World(1/360, 2, 8)
+	setInterval(function(){
 		world.step()
-	})
-window.world	= world
+	}, 1000/180);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add the grass ground				//
@@ -156,10 +154,10 @@ window.ball	= mesh
 	})
 	// 
 	body.body.linearVelocity.x	= 0
-	body.body.linearVelocity.y	= 0
+	body.body.linearVelocity.y	= 1
 	body.body.linearVelocity.z	= -5
 	
-	body.body.angularVelocity.x	= -Math.PI*6*4
+	body.body.angularVelocity.x	= -Math.PI*2
 	// body.body.angularVelocity.y	= 0
 	// body.body.angularVelocity.z	= 0
 })()
@@ -188,13 +186,6 @@ window.ball	= mesh
 		camera.position.y += (mouse.y*5 - (camera.position.y-5)) * (delta*3)
 		camera.lookAt( new THREE.Vector3(0,5,0) )
 	})
-
-	// onRenderFcts.push(function(delta, now){
-	// 	camera.position.copy(ball.position)
-	// 	camera.position.y += 3
-	// 	camera.position.z += 20
-	// 	camera.lookAt( camera.position.clone().add(new THREE.Vector3(0,0, -4)) )
-	// })
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		comment								//
