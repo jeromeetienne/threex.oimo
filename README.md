@@ -2,7 +2,7 @@ threex.oimo
 ===========
 threex.oimo is a [threex game extension for three.js](http://www.threejsgames.com/extensions/). It provides a [realistic physics](http://en.wikipedia.org/wiki/Game_physics) easy to include in your own games. So you can take objects in your game and make them fall as if it was the real world! You can code a [pool game](http://en.wikipedia.org/wiki/Pool_\(cue_sports\)) in a day!
 You make rocks fall from the sky in a realistic fashion! Sky is the limit!
-It is a warper over the excelent library [oimo.js](https://github.com/lo-th/Oimo.js) physics library. [lo-th](https://plus.google.com/114170447432405103307/posts), the author does [a lot of crazy things](http://3dflashlo.wordpress.com/)! Be sure to check it out! 
+It is a warper over the excelent library [oimo.js](https://github.com/lo-th/Oimo.js) physics library. [lo-th](https://plus.google.com/114170447432405103307/posts), the author does [a lot of crazy things](http://3dflashlo.wordpress.com/)! Be sure to check it out!
 
 
 Show Don't Tell
@@ -108,24 +108,3 @@ Then, at every frame, update it.
 ```
 oimoStats.update()
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

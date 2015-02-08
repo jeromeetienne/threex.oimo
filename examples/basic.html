@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <script src='vendor/three.js/build/three.min.js'></script>
-<script src='../vendor/oimo-1.0.0.js'></script>
+<script src='../vendor/oimo.js'></script>
 <script src='../threex.oimo.js'></script>
 <body style='margin: 0px; background-color: #bbbbbb; overflow: hidden;'><script>
 	var renderer	= new THREE.WebGLRenderer();
+	renderer.setClearColor('lightgrey')
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
 
@@ -16,7 +17,7 @@
 	//		oimo world							//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var world	= new OIMO.World()
+	var world	= new OIMO.World(1/360)
 	onRenderFcts.push(function(delta){
 		world.step()
 	})
@@ -25,60 +26,73 @@
 	//		Ground								//
 	//////////////////////////////////////////////////////////////////////////////////
 	
-	var geometry	= new THREE.CubeGeometry(100,100,400);	
+	var geometry	= new THREE.BoxGeometry(100,100,400);	
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= -geometry.height/2
+	mesh.position.y	= -geometry.parameters.height/2
 	scene.add(mesh)
 	
 	var ground	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object and make it move					//
-	//////////////////////////////////////////////////////////////////////////////////	
-for(var i = 0; i < 100; i++ ){
-	(function(){
-		if( Math.random() < 0.5 ){
-			var width	= 3 + (Math.random()-0.5)*1
-			var height	= 3 + (Math.random()-0.5)*1
-			var depth	= 3 + (Math.random()-0.5)*1
-			var geometry	= new THREE.CubeGeometry(width, height, depth)
-		}else{
-			var radius	= 3 + (Math.random()-0.5)*0
-			var geometry	= new THREE.SphereGeometry( radius )
-		}
+	//////////////////////////////////////////////////////////////////////////////////
 
-		var material	= new THREE.MeshNormalMaterial()
-		var mesh	= new THREE.Mesh( geometry, material )
-		scene.add( mesh )
-
-		mesh.position.x	= (Math.random()-0.5)*20
-		mesh.position.y	= 25 + (Math.random()-0.5)*15
-		mesh.position.z	= (Math.random()-0.5)*20
-		//////////////////////////////////////////////////////////////////////////////////
-		//		comment								//
-		//////////////////////////////////////////////////////////////////////////////////
-		
-		// create IOMO.Body from mesh
-		var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
-window.body	= body
-		// add an updater for them
-		var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
-		onRenderFcts.push(function(delta){
-			updater.update()
-		})
-
-		// if the position.y < 20, reset the position
-		onRenderFcts.push(function(delta){
-			if( mesh.position.y < -20 ){
-				mesh.position.x	= (Math.random()-0.5)*20
-				mesh.position.y	= 25 + (Math.random()-0.5)*15
-				mesh.position.z	= (Math.random()-0.5)*20
-				body.setPosition(mesh.position.x, mesh.position.y, mesh.position.z);	
+;(function(){
+	for(var i = 0; i < 300; i++ ){
+		(function(){
+			//////////////////////////////////////////////////////////////////////////////////
+			//		create the mesh
+			//////////////////////////////////////////////////////////////////////////////////
+			if( Math.random() < 0.05 ){
+				var width	= 3 + (Math.random()-0.5)*1
+				var height	= 3 + (Math.random()-0.5)*1
+				var depth	= 3 + (Math.random()-0.5)*1
+				var geometry	= new THREE.BoxGeometry(width, height, depth)
+			}else{
+				var radius	= 3 + (Math.random()-0.5)*2
+				var geometry	= new THREE.SphereGeometry( radius )
 			}
-		})
-	})()
-}    
+
+			var material	= new THREE.MeshNormalMaterial()
+			var mesh	= new THREE.Mesh( geometry, material )
+			scene.add( mesh )
+
+			mesh.position.x	= (Math.random()-0.5)*40
+			mesh.position.y	= 50 + (Math.random()-0.5)*40
+			mesh.position.z	= (Math.random()-0.5)*40
+
+			//////////////////////////////////////////////////////////////////////////////////
+			//		create a body for this mesh
+			//////////////////////////////////////////////////////////////////////////////////
+			
+			// create IOMO.Body from mesh
+			var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
+
+			// add an updater for them
+			var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
+			onRenderFcts.push(function(delta){
+				updater.update()
+			})
+			
+			//////////////////////////////////////////////////////////////////////////////////
+			//		if body is too low, reset it
+			//////////////////////////////////////////////////////////////////////////////////
+			
+			// if the position.y < 20, reset the position
+			onRenderFcts.push(function(delta){
+				if( mesh.position.y < -20 ){
+					mesh.position.x	= (Math.random()-0.5)*20
+					mesh.position.y	= 100 + (Math.random()-0.5)*15
+					mesh.position.z	= (Math.random()-0.5)*20
+					body.resetPosition(mesh.position.x, mesh.position.y, mesh.position.z);	
+				}
+			})
+		})()
+	}    
+	
+})()
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		comment								//
 	//////////////////////////////////////////////////////////////////////////////////
@@ -129,3 +143,4 @@ window.body	= body
 		})
 	})
 </script></body>
+2
