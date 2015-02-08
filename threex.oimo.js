@@ -9,7 +9,7 @@ var THREEx	= THREEx	|| {}
 THREEx.Oimo	= {}
 
 //////////////////////////////////////////////////////////////////////////////////
-//		comment								//
+//		THREEx.Oimo.createBodyFromMesh
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -56,13 +56,20 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Comments
 	//////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * convert radian to degree
+	 * 
+	 * @param {Number} radian - the input
+	 * @return {Number} - the result
+	 */
 	function radianToDegree(radian) {
 		return radian * (180 / Math.PI);
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-//		comment								//
+//		THREEx.Oimo.Body2MeshUpdater
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -72,8 +79,9 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
  * @param {THREE.Mesh} mesh - the mesh to update
  */
 THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
+
 	/**
-	 * update the mesh
+	 * update the mesh with the body
 	 */
 	this.update	= function(){
 		// copy the position
