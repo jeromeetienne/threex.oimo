@@ -48,6 +48,7 @@ THREEx.Planets.createEarth	= function(){
 		bumpScale	: 0.05,
 		specularMap	: THREE.ImageUtils.loadTexture(THREEx.Planets.baseURL+'images/earthspec1k.jpg'),
 		specular	: new THREE.Color('grey'),
+		shininess	: 10,
 	})
 	var mesh	= new THREE.Mesh(geometry, material)
 	return mesh	
@@ -404,5 +405,3 @@ THREEx.Planets._RingGeometry = function ( innerRadius, outerRadius, thetaSegment
 
 };
 THREEx.Planets._RingGeometry.prototype = Object.create( THREE.Geometry.prototype );
-
-

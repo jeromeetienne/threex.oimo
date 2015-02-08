@@ -61,4 +61,3 @@ THREEx.Crates.createCrate2	= function(){
 	var mesh	= new THREE.Mesh( geometry, material );
 	return mesh	
 }
-
