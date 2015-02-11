@@ -19,10 +19,8 @@ THREEx.Oimo	= {}
  * @param {THREE.Mesh} mesh  - the mesh 
  * @param {Boolean=} move  - true if the object gonna move, false othersize. default to true
  */
-THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
-	// handle default parameters
-	// - TODO this move parameter is crap, remove it
-	move	= move !== undefined ? move : true
+THREEx.Oimo.createBodyFromMesh	= function(world, mesh, userOptions){
+	userOptions	= userOptions	|| {}
 
 	// build body options based on mesh
 	if( mesh.geometry instanceof THREE.BoxGeometry ){
@@ -36,7 +34,7 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 			pos	: mesh.position.toArray(),
 			rot	: mesh.rotation.toArray().slice(0,3).map(radianToDegree),
 			world	: world,
-			move	: move,
+			move	: true,
 		}
 	}else if( mesh.geometry instanceof THREE.SphereGeometry ){
 		var options	= {
@@ -45,9 +43,14 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 			pos	: mesh.position.toArray(),
 			rot	: mesh.rotation.toArray().slice(0,3).map(radianToDegree),
 			world	: world,
-			move	: move,
+			move	: true,
 		}
 	}else	console.assert(false, 'Unknown geometry')
+	
+	// push the object from userOptions
+	Object.keys(userOptions).forEach(function(name){
+		options[name]	= userOptions[name]
+	})
 
 	// actually build the OIMO.Body
 	var body	= new OIMO.Body(options)
@@ -75,28 +78,22 @@ THREEx.Oimo.createBodyFromMesh	= function(world, mesh, move){
 /**
  * update a mesh with a body
  * 
+ * @param {THREE.Object3D} object3d - the object3d to update
  * @param {OIMO.Body} body - the body from which we update
- * @param {THREE.Mesh} mesh - the mesh to update
  */
-THREEx.Oimo.Body2MeshUpdater	= function(body, mesh){
-
-	/**
-	 * update the mesh with the body
-	 */
-	this.update	= function(){
-		// copy the position
-                mesh.position.copy(body.getPosition());
-		// copy the rotation
-                // - this works on three r70 only
-                //   ``` mesh.quaternion.copy(body.getQuaternion());
-		var bodyQuaternion	= body.getQuaternion()
-		mesh.quaternion.set(
-			bodyQuaternion.x,
-			bodyQuaternion.y,
-			bodyQuaternion.z,
-			bodyQuaternion.w
-		)
-	}
+THREEx.Oimo.updateObject3dWithBody	= function(object3d, body){
+	// copy the position
+        object3d.position.copy(body.getPosition());
+	// copy the rotation
+        // - this works on three r70 only
+        //   ``` object3d.quaternion.copy(body.getQuaternion());
+	var bodyQuaternion	= body.getQuaternion()
+	object3d.quaternion.set(
+		bodyQuaternion.x,
+		bodyQuaternion.y,
+		bodyQuaternion.z,
+		bodyQuaternion.w
+	)
 }
 
 

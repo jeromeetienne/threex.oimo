@@ -112,7 +112,9 @@ require([ '../package.require.js'
 			mesh.position.y	+= ((10-i)/10)*50
 			mesh.scale.x	*= (i+0.5)
 			mesh.scale.z	*= (i+0.5)
-			var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+			var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, {
+				move : false
+			})
 			scene.add(mesh)
 		})()
 	}
@@ -142,9 +144,8 @@ for(var i = 0; i < 500; i++ ){
 		var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
 
 		// add an updater for them
-		var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
 		onRenderFcts.push(function(delta){
-			updater.update()
+			THREEx.Oimo.updateObject3dWithBody(mesh, body)
 		})
 
 		// if the position.y < 20, reset the position

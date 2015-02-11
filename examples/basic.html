@@ -17,10 +17,10 @@
 	//		oimo world							//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var world	= new OIMO.World(1/360)
+	var world	= new OIMO.World(1/120, 2, 8)
 	setInterval(function(){
 		world.step()
-	}, 1000/360);
+	}, 1000/60);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Ground								//
@@ -32,7 +32,9 @@
 	mesh.position.y	= -geometry.parameters.height/2
 	scene.add(mesh)
 	
-	var ground	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+	var ground	= THREEx.Oimo.createBodyFromMesh(world, mesh, {
+		move : false
+	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object and make it move					//
@@ -70,9 +72,8 @@
 			var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
 
 			// add an updater for them
-			var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
 			onRenderFcts.push(function(delta){
-				updater.update()
+				THREEx.Oimo.updateObject3dWithBody(mesh, body)
 			})
 			
 			//////////////////////////////////////////////////////////////////////////////////

@@ -59,10 +59,10 @@ require([ '../package.require.js'
 	//		oimo world							//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var world	= new OIMO.World(1/360, 2, 8)
+	var world	= new OIMO.World(1/360, 2, 8*6)
 	setInterval(function(){
 		world.step()
-	}, 1000/180);
+	}, 1000/60);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add the grass ground				//
@@ -80,7 +80,9 @@ require([ '../package.require.js'
 	mesh.receiveShadow	= true
 	mesh.position.y	= -geometry.parameters.height/2
 
-	var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+	var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, {
+                move: false
+        })
 	scene.add(mesh)
 })()
 
@@ -116,9 +118,8 @@ for(var z =-2; z <= 1; z++ ){
 		var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
 		
 		// add an updater for them
-		var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
 		onRenderFcts.push(function(delta){
-			updater.update()
+                        THREEx.Oimo.updateObject3dWithBody(mesh, body)
 		})
 	})()
 }    
@@ -148,9 +149,8 @@ window.ball	= mesh
 	var body	= THREEx.Oimo.createBodyFromMesh(world, mesh)
 
 	// add an updater for them
-	var updater	= new THREEx.Oimo.Body2MeshUpdater(body, mesh)
 	onRenderFcts.push(function(delta){
-		updater.update()
+                THREEx.Oimo.updateObject3dWithBody(mesh, body)
 	})
 	// 
 	body.body.linearVelocity.x	= 0
